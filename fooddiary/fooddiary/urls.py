@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from django.conf import settings
 
 urlpatterns = [
-    path('', lambda request: HttpResponse('Ну привет')),
     path('admin/', admin.site.urls),
+    path('', include('diary.urls')),
 ]
 
 if settings.DEBUG:
