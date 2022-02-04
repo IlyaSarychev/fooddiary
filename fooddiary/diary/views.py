@@ -15,7 +15,7 @@ class DaysListView(ListView):
         if self.request.user.is_authenticated:
             return Day.objects.filter(user=self.request.user)
         else:
-            return Day.objects.filter(id__in=self.request.session.get('days', []))
+            return Day.objects.filter(session_key=self.request.session.session_key)
 
 
 @require_POST
@@ -27,6 +27,6 @@ def add_day(request):
     if request.user.is_authenticated:
         Day.objects.get_or_create(user=request.user, date=post_date)
     else:
-        print(request.seesion.session_key)
+        Day.objects.get_or_create(session_key=request.session.session_key, date=post_date)
 
     return HttpResponseRedirect(reverse('days_list'))
