@@ -22,13 +22,17 @@ class DaysListView(ListView):
 def add_day(request):
     '''Добавление дня в дневник'''
 
+    post_date = request.POST.get('day_date')
+
     if request.user.is_authenticated:
-        Day.objects.get_or_create(user=request.user, date=request.POST.get('day_date'))
+        Day.objects.get_or_create(user=request.user, date=post_date)
     else:
-        day = Day.objects.get_or_create(date=request.POST.get('day_date'))[0]
-        if request.session.get('days', False):
-            request.session['days'].append(day.id)
+        users_days = request.session.get('days', False)
+        if users_days:
+            if not Day.objects.filter(id__in=users_days, date=post_date).exists():
+                request.session['days'].append(Day.objects.create(date=post_date).id)
+                request.session.modified = True
         else:
-            request.session['days'] = [day.id]
+            request.session['days'] = [Day.objects.create(date=post_date).id]
 
     return HttpResponseRedirect(reverse('days_list'))
