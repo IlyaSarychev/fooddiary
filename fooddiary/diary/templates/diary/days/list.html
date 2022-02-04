@@ -8,10 +8,53 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-12">
-                <h1>Список</h1>
+                <div class="d-flex align-items-center">
+                    <h1>Дни</h1>
+                    <button data-bs-target="#dayModal" data-bs-toggle="modal" class="btn btn-success ms-3 p-1 rounded-circle"
+                        style="width: 35px; height: 35px;">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-12">
+                {{days_list}}
             </div>
         </div>
     </div>
 </main>
 
+<div class="modal fade" id="dayModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить день</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'add_day' %}" method="post">
+                    {% csrf_token %}
+                    <div class="d-flex">
+                        <input type="date" id="datePicker" class="form-control" name="day_date">
+                        <button type="submit" class="btn btn-success ms-1">Добавить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js_scripts_after %}
+<script>
+    window.onload = function() {
+        Date.prototype.toDateInputValue = (function() {
+            let local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+
+        document.getElementById('datePicker').value = new Date().toDateInputValue();
+    }
+</script>
 {% endblock %}
