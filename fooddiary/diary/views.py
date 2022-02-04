@@ -27,12 +27,6 @@ def add_day(request):
     if request.user.is_authenticated:
         Day.objects.get_or_create(user=request.user, date=post_date)
     else:
-        users_days = request.session.get('days', False)
-        if users_days:
-            if not Day.objects.filter(id__in=users_days, date=post_date).exists():
-                request.session['days'].append(Day.objects.create(date=post_date).id)
-                request.session.modified = True
-        else:
-            request.session['days'] = [Day.objects.create(date=post_date).id]
+        print(request.seesion.session_key)
 
     return HttpResponseRedirect(reverse('days_list'))

@@ -7,6 +7,7 @@ class Day(models.Model):
 
     user = models.ForeignKey(User, null=True, blank=True, related_name='days', on_delete=models.CASCADE)
     date = models.DateField('Дата', auto_now_add=True)
+    session_key = models.CharField('Ключ сессии', max_length=40, null=True, blank=True)
 
     class Meta:
         ordering = ('-date',)
