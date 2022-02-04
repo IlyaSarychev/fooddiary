@@ -1,12 +1,12 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from .models import Day
 
 
 class DaysListView(ListView):
-    '''список дней в дневнике'''
+    '''Список дней в дневнике'''
 
     template_name = 'diary/days/list.html'
     context_object_name = 'days_list'
@@ -30,3 +30,12 @@ def add_day(request):
         Day.objects.get_or_create(session_key=request.session.session_key, date=post_date)
 
     return HttpResponseRedirect(reverse('days_list'))
+
+
+class DayDetailView(DetailView):
+    '''Страница одного дня'''
+
+    template_name = 'diary/days/detail.html'
+
+    def get_object(self):
+        return Day.objects.get(id=self.kwargs['id'])

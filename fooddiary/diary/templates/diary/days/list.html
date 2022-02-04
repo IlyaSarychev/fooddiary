@@ -20,7 +20,7 @@
                 <div class="row">
                     {% for day in days_list %}
                         <div class="col-6 col-md-4 col-lg-2">
-                            <a href="#" class="btn btn-outline-success w-100">
+                            <a href="{% url 'day_detail' day.id %}" class="btn btn-outline-success w-100">
                                 {{ day.date|date:"j E" }}
                             </a>
                         </div>

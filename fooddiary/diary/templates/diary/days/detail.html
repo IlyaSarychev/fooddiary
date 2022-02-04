@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}День {{ day.date|date:"j E" }}{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex align-items-center mb-4">
+                    <h1>{{ day.date|date:"j E" }}</h1>
+                    <button title="Добавить прием пищи" data-bs-target="#dayModal" data-bs-toggle="modal" class="btn btn-success ms-3 p-1 rounded-circle"
+                        style="width: 35px; height: 35px;">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
