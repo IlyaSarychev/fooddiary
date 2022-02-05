@@ -29,7 +29,7 @@ class Meal(models.Model):
 class Food(models.Model):
     '''Еда'''
 
-    user = models.ForeignKey(User, blank=True, related_name='food', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, blank=True, related_name='food', on_delete=models.CASCADE)
     session_key = models.CharField('Ключ сессии', max_length=40, null=True, blank=True)
     title = models.CharField('Название', max_length=150)
     description = models.TextField('Описание', null=True, blank=True)

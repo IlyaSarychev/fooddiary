@@ -1,8 +1,9 @@
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.decorators.http import require_POST
 from .models import Day, Food
+from .forms import CreateFoodForm
 
 
 class DaysListView(ListView):
@@ -45,6 +46,7 @@ class MyFoodListView(ListView):
     '''Список еды пользователя'''
 
     template_name = 'diary/food/list.html'
+    context_object_name = 'food'
     
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -56,4 +58,16 @@ class MyFoodListView(ListView):
 class MyFoodCreateView(CreateView):
     '''Добавление еды пользователем'''
 
-    pass
+    template_name = 'diary/food/create.html'
+    form_class = CreateFoodForm
+    success_url = reverse_lazy('my_food_list')
+
+    def form_valid(self, form):
+        food = form.save(commit=False)
+        if self.request.user.is_authenticated:
+            food.user = self.request.user
+        else:
+            food.session_key = self.request.session.session_key
+        food.save()
+        return HttpResponseRedirect(self.success_url)
+    

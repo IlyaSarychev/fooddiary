@@ -9,7 +9,7 @@
             <div class="col-12">
                 <div class="d-flex align-items-center mb-4">
                     <h1>Моя база данных о еде</h1>
-                    <a href="#" class="btn btn-success ms-3 p-1 rounded-circle"
+                    <a href="{% url 'my_food_create' %}" class="btn btn-success ms-3 p-1 rounded-circle"
                         style="width: 35px; height: 35px;">
                         <i class="bi bi-plus"></i>
                     </a>
@@ -19,6 +19,7 @@
             <div class="col-12">
                 <div class="row">
                     {% for f in food %}
+                        {{f}}
                     {% empty %}
                         <div class="col-12">
                             <p>В вашей базе нет данных о еде.</p>
