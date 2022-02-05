@@ -9,13 +9,38 @@
             <div class="col-12">
                 <div class="d-flex align-items-center mb-4">
                     <h1>{{ day.date|date:"j E" }}</h1>
-                    <button title="Добавить прием пищи" data-bs-target="#dayModal" data-bs-toggle="modal" class="btn btn-success ms-3 p-1 rounded-circle"
+                    <button title="Добавить прием пищи" data-bs-target="#mealModal" data-bs-toggle="modal" class="btn btn-success ms-3 p-1 rounded-circle"
                         style="width: 35px; height: 35px;">
                         <i class="bi bi-plus"></i>
                     </button>
                 </div>
             </div>
+
+            <div class="col-12">
+                {% if day.meals.count < 1 %}
+                    <p>В этом дне пока отсутствуют приемы пищи</p>
+                {% else %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </main>
+
+<div class="modal fade" id="mealModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить прием пищи</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="." method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
