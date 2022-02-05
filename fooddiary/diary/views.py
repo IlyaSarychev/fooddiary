@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.views.decorators.http import require_POST
 from .models import Day, Food
 
@@ -47,6 +47,13 @@ class MyFoodListView(ListView):
     template_name = 'diary/food/list.html'
     
     def get_queryset(self):
-        pass
-        # if self.request.user.is_authenticated:
-            # food = Food.objects.filter(user)
+        if self.request.user.is_authenticated:
+            return Food.objects.filter(user=self.request.user)
+        else:
+            return Food.objects.filter(session_key=self.request.session.session_key)
+
+
+class MyFoodCreateView(CreateView):
+    '''Добавление еды пользователем'''
+
+    pass
