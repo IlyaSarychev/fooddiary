@@ -16,21 +16,29 @@ class Day(models.Model):
 class Meal(models.Model):
     '''Прием пищи'''
 
+    user = models.ForeignKey(User, null=True, blank=True, related_name='meals', on_delete=models.CASCADE)
+    session_key = models.CharField('Ключ сессии', max_length=40, null=True, blank=True)
     day = models.ForeignKey(Day, on_delete=models.CASCADE, related_name='meals')
     time = models.TimeField('Время приема пищи', auto_now=True)
     food = models.ManyToManyField('Food', related_name='food', through='MealFood')
+
+    class Meta:
+        ordering = ('-time', '-day')
 
 
 class Food(models.Model):
     '''Еда'''
 
     user = models.ForeignKey(User, blank=True, related_name='food', on_delete=models.CASCADE)
+    session_key = models.CharField('Ключ сессии', max_length=40, null=True, blank=True)
     title = models.CharField('Название', max_length=150)
     description = models.TextField('Описание', null=True, blank=True)
     calories = models.PositiveIntegerField('Калорийность на 100г')
     date = models.DateTimeField('Дата создания', auto_now_add=True)
     meals = models.ManyToManyField('Meal', related_name='meals', through='MealFood')
 
+    class Meta:
+        ordering = ('-date',)
 
 
 class MealFood(models.Model):

@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
-from .models import Day
+from .models import Day, Food
 
 
 class DaysListView(ListView):
@@ -39,3 +39,14 @@ class DayDetailView(DetailView):
 
     def get_object(self):
         return Day.objects.get(id=self.kwargs['id'])
+
+
+class MyFoodListView(ListView):
+    '''Список еды пользователя'''
+
+    template_name = 'diary/food/list.html'
+    
+    def get_queryset(self):
+        pass
+        # if self.request.user.is_authenticated:
+            # food = Food.objects.filter(user)

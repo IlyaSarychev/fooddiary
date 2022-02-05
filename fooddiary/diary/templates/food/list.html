@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}База данных о еде{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex align-items-center mb-4">
+                    <h1>Моя база данных о еде</h1>
+                    <a href="#" class="btn btn-success ms-3 p-1 rounded-circle"
+                        style="width: 35px; height: 35px;">
+                        <i class="bi bi-plus"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="row">
+                    {% for f in food %}
+                    {% empty %}
+                        <div class="col-12">
+                            <p>В вашей базе нет данных о еде.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
