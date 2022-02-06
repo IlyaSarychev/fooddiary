@@ -17,15 +17,22 @@
             </div>
 
             <div class="col-12">
-                <div class="row">
-                    {% for f in food %}
-                        {{f}}
-                    {% empty %}
-                        <div class="col-12">
-                            <p>В вашей базе нет данных о еде.</p>
-                        </div>
+                {% if food.count > 0 %}
+                <ul class="list-group list-group-flush">
+                    {% for item in food %}
+                        <li class="list-group-item d-flex jistify-content-between align-items-center">
+                            <h6 class="m-0">{{item.title}}</h6>
+                            <span class="ms-2 fs-6 text-muted">{{ item.calories }}ккал/100гр</span>
+                            <div class="d-flex ms-auto">
+                                <a href="#" class="btn btn-primary">Изменить</a>
+                                <a href="{% url 'my_food_delete' item.id %}" class="btn btn-danger ms-1">Удалить</a>
+                            </div>
+                        </li>
                     {% endfor %}
-                </div>
+                </ul>
+                {% else %}
+                    <p>В вашей базе нет данных о еде.</p>
+                {% endif %}
             </div>
         </div>
     </div>
