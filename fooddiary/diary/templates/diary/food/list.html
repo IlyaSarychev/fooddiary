@@ -24,7 +24,7 @@
                             <h6 class="m-0">{{item.title}}</h6>
                             <span class="ms-2 fs-6 text-muted">{{ item.calories }}ккал/100гр</span>
                             <div class="d-flex ms-auto">
-                                <a href="#" class="btn btn-primary">Изменить</a>
+                                <a href="{% url 'my_food_update' item.id %}" class="btn btn-primary">Изменить</a>
                                 <a href="{% url 'my_food_delete' item.id %}" class="btn btn-danger ms-1">Удалить</a>
                             </div>
                         </li>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменить {{food.title}}{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <h1 class="mb-4">Изменить {{food.title}}</h1>
+            </div>
+            <div class="col-12">
+                <form action="." method="post" class="pb-5">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{field.auto_id}}">{{field.label}}</label>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success">Изменить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

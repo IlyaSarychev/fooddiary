@@ -9,4 +9,5 @@ urlpatterns = [
     path('my-data/food/', views.MyFoodListView.as_view(), name='my_food_list'),
     path('my-data/food/create/', views.MyFoodCreateView.as_view(), name='my_food_create'),
     path('my-data/food/delete/<int:id>/', views.delete_my_food_view, name='my_food_delete'),
+    path('my-data/food/update/<pk>/', views.MyFoodUpdateView.as_view(), name='my_food_update'),
 ]

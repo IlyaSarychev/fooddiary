@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.decorators.http import require_POST
 from .models import Day, Food
 from .forms import CreateFoodForm
@@ -73,7 +73,7 @@ class MyFoodCreateView(CreateView):
     
 
 def delete_my_food_view(request, id):
-    '''Удалить мою еду по id'''
+    '''Удаление еды пользователя по id'''
 
     if request.user.is_authenticated:
         Food.objects.get(user=request.user, id=id).delete()
@@ -81,3 +81,12 @@ def delete_my_food_view(request, id):
         Food.objects.get(session_key=request.session.session_key, id=id).delete()
 
     return HttpResponseRedirect(reverse('my_food_list'))
+
+
+class MyFoodUpdateView(UpdateView):
+    '''Изменение еды пользователя'''
+
+    model = Food
+    template_name = 'diary/food/update.html'
+    form_class = CreateFoodForm
+    success_url = reverse_lazy('my_food_list')
