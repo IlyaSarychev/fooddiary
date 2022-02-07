@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'debug_toolbar',
+    'django_select2',
 
-    'diary.apps.DiaryConfig'
+    'diary.apps.DiaryConfig',
 ]
 
 MIDDLEWARE = [

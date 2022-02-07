@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -19,8 +20,8 @@ class Meal(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, related_name='meals', on_delete=models.CASCADE)
     session_key = models.CharField('Ключ сессии', max_length=40, null=True, blank=True)
     day = models.ForeignKey(Day, on_delete=models.CASCADE, related_name='meals')
-    time = models.TimeField('Время приема пищи', auto_now=True)
-    food = models.ManyToManyField('Food', related_name='food', through='MealFood')
+    time = models.TimeField('Время приема пищи', default=timezone.localtime)
+    food = models.ManyToManyField('Food', verbose_name='Еда', through='MealFood')
 
     class Meta:
         ordering = ('-time', '-day')
@@ -40,11 +41,14 @@ class Food(models.Model):
     class Meta:
         ordering = ('-date',)
 
+    def __str__(self):
+        return self.title
+
 
 class MealFood(models.Model):
     '''Связь m2m приемов пищи и еды'''
     
     meal = models.ForeignKey(Meal, on_delete=models.CASCADE, related_name='meal_food')
     food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='meal_food')
-    grams = models.PositiveIntegerField('Количество грамм', default=100)
+    grams = models.PositiveIntegerField('Количество грамм')
     date = models.DateTimeField('Дата добавления', auto_now_add=True)

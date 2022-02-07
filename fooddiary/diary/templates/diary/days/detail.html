@@ -36,7 +36,13 @@
             <div class="modal-body">
                 <form action="." method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-success">Добавить</button>
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{field.auto_id}}" class="form-label">{{field.label}}</label>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success ms-auto d-block">Добавить</button>
                 </form>
             </div>
         </div>

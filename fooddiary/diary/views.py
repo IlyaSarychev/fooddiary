@@ -3,7 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.decorators.http import require_POST
 from .models import Day, Food
-from .forms import CreateFoodForm
+from .forms import CreateFoodForm, MealForm
 
 
 class DaysListView(ListView):
@@ -37,9 +37,18 @@ class DayDetailView(DetailView):
     '''Страница одного дня'''
 
     template_name = 'diary/days/detail.html'
+    # extra_context = {
+    #     'form': MealForm
+    # }
 
     def get_object(self):
         return Day.objects.get(id=self.kwargs['id'])
+
+    def get_context_data(self, **kwargs):
+        '''Добавить форму с переданным request'''
+        kwargs = super().get_context_data(**kwargs)
+        kwargs['form'] = MealForm(request=self.request)
+        return kwargs
 
 
 class MyFoodListView(ListView):
