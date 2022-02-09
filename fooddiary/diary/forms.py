@@ -58,3 +58,6 @@ class MealForm(forms.ModelForm):
                 bfield.field.widget.attrs['class'] = 'form-select'
             else:
                 bfield.field.widget.attrs['class'] = 'form-control'
+
+    # def save(self, commit=True):
+    #     return super().save(commit)

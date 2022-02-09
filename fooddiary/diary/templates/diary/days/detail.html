@@ -20,6 +20,9 @@
                 {% if day.meals.count < 1 %}
                     <p>В этом дне пока отсутствуют приемы пищи</p>
                 {% else %}
+                    {% for meal in day.meals.all %}
+                        {{meal}}
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>
@@ -34,8 +37,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="." method="post">
+                <form action="{% url 'create_meal' %}" method="post">
                     {% csrf_token %}
+                    <input type="hidden" name="day" value="{{day.id}}">
                     <div class="mb-3">
                         <label class="form-label">{{form.food.label}}</label>
                         <div class="row">
@@ -73,14 +77,21 @@
         const foodSelect = document.querySelector('select[name="food"]').cloneNode(true)
         const gramsInput = document.querySelector('input[name="grams"]').cloneNode(true)
 
+        let count = 1
+
         document.querySelector('.add-food').onclick = function() {
+
+            count++
             
             const col6 = document.createElement('div')
             col6.classList = 'col-6 mt-2'
 
+            foodSelect.setAttribute('name', 'food' + count)
             col6.appendChild(foodSelect)
             this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
+
             col6.innerHTML = ''
+            gramsInput.setAttribute('name', 'grams' + count)
             col6.appendChild(gramsInput)
             this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
         }

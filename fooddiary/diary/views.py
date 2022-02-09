@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.decorators.http import require_POST
-from .models import Day, Food
+from .models import Day, Food, MealFood
 from .forms import CreateFoodForm, MealForm
 
 
@@ -98,7 +98,21 @@ class MyFoodUpdateView(UpdateView):
     success_url = reverse_lazy('my_food_list')
 
 
-def create_meal(request):
+@require_POST
+def create_meal_view(request):
     '''Создать прием пищи'''
 
-    pass
+    form = MealForm(request.POST, request=request)
+    meal = form.save(commit=False)
+    meal.day = Day.objects.get(id=request.POST.get('day'))
+    meal.save()
+    food_id_values = [request.POST.get(key) for key in request.POST if key.startswith('food')]
+    grams_values = [request.POST.get(key) for key in request.POST if key.startswith('grams')]
+    for (food_id, grams) in zip(food_id_values, grams_values):
+        MealFood.objects.create(
+            meal=meal,
+            food=Food.objects.get(id=food_id),
+            grams=grams
+        )
+
+    return HttpResponseRedirect(reverse('day_detail', args=[request.POST.get('day')]))
