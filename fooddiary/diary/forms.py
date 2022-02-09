@@ -23,12 +23,22 @@ class MealForm(forms.ModelForm):
 
     class Meta:
         model = Meal
-        fields = ['food', 'time']
+        fields = ['time']
 
-    food = forms.ModelMultipleChoiceField(
-        queryset=None,
-        widget=forms.CheckboxSelectMultiple,
-        label='Еда'
+    food = forms.ModelChoiceField(
+        queryset=Food.objects.none(),
+        label='Еда',
+        empty_label='Выберите еду'
+    )
+
+    grams = forms.IntegerField(
+        min_value=0,
+        label='Граммов',
+        widget=forms.NumberInput(
+            attrs={
+                'placeholder': 'Кол-во граммов'
+            }
+        )
     )
 
     def __init__(self, *args, **kwargs):
@@ -44,5 +54,7 @@ class MealForm(forms.ModelForm):
 
         # Добавить bootstrap классы
         for bfield in self.visible_fields():
-            if bfield.field.widget.__class__.__name__ != 'CheckboxSelectMultiple':
+            if bfield.field.label == 'Еда':
+                bfield.field.widget.attrs['class'] = 'form-select'
+            else:
                 bfield.field.widget.attrs['class'] = 'form-control'

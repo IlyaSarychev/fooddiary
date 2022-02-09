@@ -37,9 +37,6 @@ class DayDetailView(DetailView):
     '''Страница одного дня'''
 
     template_name = 'diary/days/detail.html'
-    # extra_context = {
-    #     'form': MealForm
-    # }
 
     def get_object(self):
         return Day.objects.get(id=self.kwargs['id'])
@@ -99,3 +96,9 @@ class MyFoodUpdateView(UpdateView):
     template_name = 'diary/food/update.html'
     form_class = CreateFoodForm
     success_url = reverse_lazy('my_food_list')
+
+
+def create_meal(request):
+    '''Создать прием пищи'''
+
+    pass

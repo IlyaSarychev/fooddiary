@@ -36,12 +36,27 @@
             <div class="modal-body">
                 <form action="." method="post">
                     {% csrf_token %}
-                    {% for field in form %}
                     <div class="mb-3">
-                        <label for="{{field.auto_id}}" class="form-label">{{field.label}}</label>
-                        {{field}}
+                        <label class="form-label">{{form.food.label}}</label>
+                        <div class="row">
+                            <div class="col-6">
+                                {{form.food}}
+                            </div>
+                            <div class="col-6">
+                                {{form.grams}}
+                            </div>
+                            <div class="col-12">
+                                <button class='btn p-0 mt-2 d-flex align-items-center mx-auto add-food' type="button">
+                                    <i class="bi bi-plus-circle-fill fs-4 text-success"></i>
+                                    <span class="ms-2">Добавить</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    {% endfor %}
+                    <div class="mb-3">
+                        <label for="{{form.time.auto_id}}" class="form-label">{{form.time.label}}</label>
+                        {{form.time}}
+                    </div>
                     <button type="submit" class="btn btn-success ms-auto d-block">Добавить</button>
                 </form>
             </div>
@@ -49,4 +64,26 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block js_scripts_after %}
+<script>
+    window.onload = () => {
+
+        const foodSelect = document.querySelector('select[name="food"]').cloneNode(true)
+        const gramsInput = document.querySelector('input[name="grams"]').cloneNode(true)
+
+        document.querySelector('.add-food').onclick = function() {
+            
+            const col6 = document.createElement('div')
+            col6.classList = 'col-6 mt-2'
+
+            col6.appendChild(foodSelect)
+            this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
+            col6.innerHTML = ''
+            col6.appendChild(gramsInput)
+            this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
+        }
+    }
+</script>
 {% endblock %}
