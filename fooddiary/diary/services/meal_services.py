@@ -46,3 +46,21 @@ def delete_meal_by_id(request, meal_id):
         deleted = Meal.objects.filter(session_key=request.session.session_key, id=meal_id).delete()
 
     return deleted
+
+
+def get_meal_info(meal_id):
+    '''Получить информацию о приеме пищи (еда, граммы, калории)'''
+
+    meal = Meal.objects.get(id=meal_id)
+    data = []
+
+    for meal_food in meal.meal_food.all():
+        item = {
+            'grams': meal_food.grams
+        }
+        item['food_title'] = meal_food.food.title
+        item['food_calories'] = meal_food.food.calories
+        item['calories'] = int(meal_food.grams * (meal_food.food.calories / 100))
+        data.append(item)
+
+    return data

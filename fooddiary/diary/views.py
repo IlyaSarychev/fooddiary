@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.decorators.http import require_POST
@@ -114,3 +114,13 @@ def delete_meal_view(request, day_id, meal_id):
     meal_services.delete_meal_by_id(request, meal_id)
 
     return HttpResponseRedirect(reverse('day_detail', args=[day_id]))
+
+
+def get_meal_info_view(request, meal_id):
+    '''AJAX-запрос на получение информации о приеме пищи'''
+
+    data = meal_services.get_meal_info(meal_id)
+
+    return JsonResponse({
+        'data': data
+    })

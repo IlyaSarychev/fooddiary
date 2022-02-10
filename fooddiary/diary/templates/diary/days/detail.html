@@ -24,12 +24,12 @@
                     {% for meal in meals %}
                         <li 
                             class="list-group-item d-flex align-items-center"
-                            data-food="{{meal}}"
+                            data-meal-id="{{meal.id}}"
                         >
                             <h6 class="mb-0">{{forloop.counter}}.</h6>
                             <p class="mb-0 ms-3">Время приема пищи: {{meal.time}}</p>
                             <p class="mb-0 ms-3 text-muted">{{meal.calories}} ккал.</p>
-                            <a href="#" class="btn btn-warning ms-auto" data-bs-toggle="modal" data-bs-target="#mealInfo">
+                            <a href="#" class="btn btn-warning ms-auto show-meal-info" data-target="#mealInfo">
                                 Посмотреть
                             </a>
                             <a href="#" class="btn btn-primary ms-1">
@@ -88,11 +88,14 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"></h5>
+                <h5 class="modal-title">Информация о приеме пищи</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
+                
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger ms-auto" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>
@@ -124,6 +127,38 @@
             gramsInput.setAttribute('name', 'grams' + count)
             col6.appendChild(gramsInput)
             this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
+        }
+
+
+        const showInfoBtn = document.querySelector('.show-meal-info')
+        const infoModal = document.querySelector('#mealInfo')
+        const infoModalBody = infoModal.querySelector('.modal-body')
+        const bootstrapObjectModal = new bootstrap.Modal(infoModal)
+
+        showInfoBtn.onclick = function(e) {
+            e.preventDefault()
+            
+            const mealId = this.closest('li').getAttribute('data-meal-id')
+
+            fetch(`/get-meal-info/${mealId}/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    data = data.data
+                    infoModalBody.innerHTML = ''
+
+                    data.forEach(item => {
+                        const paragraph = document.createElement('p')
+                        paragraph.innerHTML = `${item.food_title} ${item.grams}гр. (${item.food_calories} ккал./100гр.) <span class="d-block">Итого: <b>${item.calories} ккал.</b></span>`
+                        infoModalBody.appendChild(paragraph)
+                    })
+
+                    bootstrapObjectModal.show()
+                })
         }
     }
 </script>
