@@ -1,5 +1,5 @@
 from ..forms import MealForm
-from ..models import Day, MealFood, Food
+from ..models import Day, MealFood, Food, Meal
 
 
 def create_meal_from_request(request):
@@ -19,13 +19,30 @@ def create_meal_from_request(request):
 
     meal.save()
     
+    total_calories = 0
     food_id_values = [request.POST.get(key) for key in request.POST if key.startswith('food')]
     grams_values = [request.POST.get(key) for key in request.POST if key.startswith('grams')]
     for (food_id, grams) in zip(food_id_values, grams_values):
+        food = Food.objects.get(id=food_id)
         MealFood.objects.create(
             meal=meal,
-            food=Food.objects.get(id=food_id),
+            food=food,
             grams=grams
         )
+        total_calories += int(food.calories / 100 * int(grams)) 
+
+    meal.calories = total_calories
+    meal.save()
 
     return meal
+
+
+def delete_meal_by_id(request, meal_id):
+    '''Удалить прием пищи по id у пользователя'''
+
+    if request.user.is_authenticated:
+        deleted = Meal.objects.filter(user=request.user, id=meal_id).delete()
+    else:
+        deleted = Meal.objects.filter(session_key=request.session.session_key, id=meal_id).delete()
+
+    return deleted

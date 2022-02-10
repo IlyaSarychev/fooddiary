@@ -46,6 +46,7 @@ class DayDetailView(DetailView):
         '''Добавить форму с переданным request'''
         kwargs = super().get_context_data(**kwargs)
         kwargs['form'] = MealForm(request=self.request)
+        kwargs['meals'] = kwargs['day'].meals.all()
         return kwargs
 
 
@@ -105,3 +106,11 @@ def create_meal_view(request):
 
     meal_services.create_meal_from_request(request)
     return HttpResponseRedirect(reverse('day_detail', args=[request.POST.get('day')]))
+
+
+def delete_meal_view(request, day_id, meal_id):
+    '''Удалить прием пищи'''
+
+    meal_services.delete_meal_by_id(request, meal_id)
+
+    return HttpResponseRedirect(reverse('day_detail', args=[day_id]))

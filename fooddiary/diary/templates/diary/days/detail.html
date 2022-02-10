@@ -20,9 +20,25 @@
                 {% if day.meals.count < 1 %}
                     <p>В этом дне пока отсутствуют приемы пищи</p>
                 {% else %}
-                    {% for meal in day.meals.all %}
-                        {{meal}}
+                <ul class="list-group list-group-flush">
+                    {% for meal in meals %}
+                        <li 
+                            class="list-group-item d-flex align-items-center"
+                            data-food="{{meal}}"
+                        >
+                            <h6 class="mb-0">{{forloop.counter}}.</h6>
+                            <p class="mb-0 ms-3">Время приема пищи: {{meal.time}}</p>
+                            <p class="mb-0 ms-3 text-muted">{{meal.calories}} ккал.</p>
+                            <a href="#" class="btn btn-warning ms-auto" data-bs-toggle="modal" data-bs-target="#mealInfo">
+                                Посмотреть
+                            </a>
+                            <a href="#" class="btn btn-primary ms-1">
+                                Изменить
+                            </a>
+                            <a href="{% url 'delete_meal' day.id meal.id %}" class="btn btn-danger ms-1">Удалить</a>
+                        </li>
                     {% endfor %}
+                </ul>
                 {% endif %}
             </div>
         </div>
@@ -63,6 +79,20 @@
                     </div>
                     <button type="submit" class="btn btn-success ms-auto d-block">Добавить</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mealInfo">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
             </div>
         </div>
     </div>
