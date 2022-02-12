@@ -32,7 +32,7 @@
                             <a href="#" class="btn btn-warning ms-auto show-meal-info" data-target="#mealInfo">
                                 Посмотреть
                             </a>
-                            <a href="#" class="btn btn-primary ms-1">
+                            <a href="{% url 'update_meal' meal.id %}" class="btn btn-primary ms-1">
                                 Изменить
                             </a>
                             <a href="{% url 'delete_meal' day.id meal.id %}" class="btn btn-danger ms-1">Удалить</a>
@@ -56,23 +56,6 @@
                 <form action="{% url 'create_meal' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="day" value="{{day.id}}">
-                    <div class="mb-3">
-                        <label class="form-label">{{form.food.label}}</label>
-                        <div class="row">
-                            <div class="col-6">
-                                {{form.food}}
-                            </div>
-                            <div class="col-6">
-                                {{form.grams}}
-                            </div>
-                            <div class="col-12">
-                                <button class='btn p-0 mt-2 d-flex align-items-center mx-auto add-food' type="button">
-                                    <i class="bi bi-plus-circle-fill fs-4 text-success"></i>
-                                    <span class="ms-2">Добавить</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="mb-3">
                         <label for="{{form.time.auto_id}}" class="form-label">{{form.time.label}}</label>
                         {{form.time}}
@@ -106,29 +89,6 @@
 {% block js_scripts_after %}
 <script>
     window.onload = () => {
-
-        const foodSelect = document.querySelector('select[name="food"]').cloneNode(true)
-        const gramsInput = document.querySelector('input[name="grams"]').cloneNode(true)
-
-        let count = 1
-
-        document.querySelector('.add-food').onclick = function() {
-
-            count++
-            
-            const col6 = document.createElement('div')
-            col6.classList = 'col-6 mt-2'
-
-            foodSelect.setAttribute('name', 'food' + count)
-            col6.appendChild(foodSelect)
-            this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
-
-            col6.innerHTML = ''
-            gramsInput.setAttribute('name', 'grams' + count)
-            col6.appendChild(gramsInput)
-            this.parentNode.parentNode.insertBefore(col6.cloneNode(true), this.parentNode)
-        }
-
 
         const showInfoBtn = document.querySelector('.show-meal-info')
         const infoModal = document.querySelector('#mealInfo')

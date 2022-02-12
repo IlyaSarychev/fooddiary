@@ -1,9 +1,11 @@
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
+from django.shortcuts import render
+from django.db.models import F, Sum
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.decorators.http import require_POST
-from .models import Day, Food
-from .forms import CreateFoodForm, MealForm
+from .models import Day, Food, Meal
+from .forms import CreateFoodForm, MealForm, MealFoodForm
 from .services import meal_services
 
 
@@ -45,7 +47,7 @@ class DayDetailView(DetailView):
     def get_context_data(self, **kwargs):
         '''Добавить форму с переданным request'''
         kwargs = super().get_context_data(**kwargs)
-        kwargs['form'] = MealForm(request=self.request)
+        kwargs['form'] = MealForm()
         kwargs['meals'] = kwargs['day'].meals.all()
         return kwargs
 
@@ -104,8 +106,8 @@ class MyFoodUpdateView(UpdateView):
 def create_meal_view(request):
     '''Создать прием пищи'''
 
-    meal_services.create_meal_from_request(request)
-    return HttpResponseRedirect(reverse('day_detail', args=[request.POST.get('day')]))
+    meal = meal_services.create_meal_from_request(request)
+    return HttpResponseRedirect(reverse('update_meal', args=[meal.id]))
 
 
 def delete_meal_view(request, day_id, meal_id):
@@ -119,8 +121,31 @@ def delete_meal_view(request, day_id, meal_id):
 def get_meal_info_view(request, meal_id):
     '''AJAX-запрос на получение информации о приеме пищи'''
 
-    data = meal_services.get_meal_info(meal_id)
-
     return JsonResponse({
-        'data': data
+        'data': meal_services.get_meal_info(meal_id)
     })
+
+
+def update_meal_view(request, meal_id):
+    '''Изменение приема пищи'''
+
+    meal = Meal.objects.get(id=meal_id)
+    context = {
+        'meal': meal,
+        'food': meal.meal_food.annotate(
+            calories=(F('food__calories') * F('grams') / 100)
+        ).all(),
+        'form': MealForm(instance=meal),
+        'food_form': MealFoodForm(request=request)
+    }
+    context['total_calories'] = context['food'].aggregate(Sum('calories'))['calories__sum']
+
+    return render(request, 'diary/meal/update.html', context)
+
+
+def add_food_to_meal_view(request, meal_id):
+    '''Обработка формы добавления связи еды и приема пищи'''
+
+    meal_services.add_food_to_meal(request, meal_id)
+
+    return HttpResponseRedirect(reverse('update_meal', args=[meal_id]))

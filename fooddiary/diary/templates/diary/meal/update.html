@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}Изменить прием пищи {{meal.day.date|date:"j E"}} {{meal.time}}{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <h1 class="mb-4">Прием пищи {{meal.day.date|date:"j E"}} {{meal.time}}</h1>
+            </div>
+            <div class="col-sm-6 col-md-10">
+                <ul class="list-group list-group-flush mb-3 w-75">
+                    {% for item in food %}
+                        <li class="list-group-item ps-0 d-flex align-items-center">
+                            <b>{{item.food}}</b>
+                            <span class="text-muted ms-2">{{item.grams}}гр.</span>
+                            <span class="ms-auto">{{item.calories}} ккал</span>
+                        </li>
+                    {% empty %}
+                        <li class="ps-0 list-group-item">Об этом приеме пищи пока нет информации</li>
+                    {% endfor %}
+                    {% if total_calories %}
+                        <li class="list-group-item ps-0 d-flex align-items-center">
+                            <b>Итого:</b>
+                            <b class="ms-auto">{{total_calories}} ккал</b>
+                        </li>
+                    {% endif %}
+                </ul>
+                <button 
+                    title="Добавить прием пищи" 
+                    data-bs-target="#mealFoodModal" 
+                    data-bs-toggle="modal" 
+                    class="btn btn-success"
+                >
+                    <i class="bi bi-plus-circle me-2"></i>
+                    <span>Добавить еду</span>
+                </button>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{form.time.auto_id}}" class="form-label">{{form.time.label}}</label>
+                        {{form.time}}
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success ms-auto d-block">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="mealFoodModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить еду</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'add_food_to_meal' meal.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="day" value="{{day.id}}">
+                    <div class="mb-3">
+                        <label for="{{food_form.food.auto_id}}" class="form-label">Еда</label>
+                        {{food_form.food}}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{food_form.grams.auto_id}}" class="form-label">{{food_form.grams.label}}</label>
+                        {{food_form.grams}}
+                    </div>
+                    <button type="submit" class="btn btn-success ms-auto d-block">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

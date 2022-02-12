@@ -5,33 +5,15 @@ from ..models import Day, MealFood, Food, Meal
 def create_meal_from_request(request):
     '''Создать прием пищи из POST-запроса'''
 
-    form = MealForm(request.POST, request=request)
+    form = MealForm(request.POST)
     meal = form.save(commit=False)
     meal.day = Day.objects.get(id=request.POST.get('day'))
 
-    # установка значения поля пользователя или ключа сессии
     if request.user.is_authenticated:
         meal.user = request.user
     else:
-        if not request.session.session_key:
-            request.session.create()
         meal.session_key = request.session.session_key
 
-    meal.save()
-    
-    total_calories = 0
-    food_id_values = [request.POST.get(key) for key in request.POST if key.startswith('food')]
-    grams_values = [request.POST.get(key) for key in request.POST if key.startswith('grams')]
-    for (food_id, grams) in zip(food_id_values, grams_values):
-        food = Food.objects.get(id=food_id)
-        MealFood.objects.create(
-            meal=meal,
-            food=food,
-            grams=grams
-        )
-        total_calories += int(food.calories / 100 * int(grams)) 
-
-    meal.calories = total_calories
     meal.save()
 
     return meal
@@ -64,3 +46,23 @@ def get_meal_info(meal_id):
         data.append(item)
 
     return data
+
+
+def add_food_to_meal(request, meal_id):
+    '''Добавить связь еды и приема пищи'''
+
+    food = Food.objects.get(id=request.POST.get('food'))
+    grams = request.POST.get('grams')
+
+    print(request.session.session_key)
+
+    if request.user.is_authenticated:
+        meal = Meal.objects.get(id=meal_id, user=request.user)
+    else:
+        meal = Meal.objects.get(id=meal_id, session_key=request.session.session_key)
+
+    return MealFood.objects.create(
+        food=food,
+        meal=meal,
+        grams=grams
+    )

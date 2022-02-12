@@ -1,5 +1,5 @@
 from django import forms
-from .models import Food, Meal
+from .models import Food, Meal, MealFood
 
 
 class CreateFoodForm(forms.ModelForm):
@@ -24,29 +24,36 @@ class MealForm(forms.ModelForm):
     class Meta:
         model = Meal
         fields = ['time']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Добавить bootstrap классы
+        for bfield in self.visible_fields():
+            if bfield.field.label == 'Еда':
+                bfield.field.widget.attrs['class'] = 'form-select'
+            else:
+                bfield.field.widget.attrs['class'] = 'form-control'
+
+
+class MealFoodForm(forms.ModelForm):
+    '''Форма создания связей приемов пищи и еды'''
+
+    class Meta:
+        model = MealFood
+        fields = ['grams']
 
     food = forms.ModelChoiceField(
         queryset=Food.objects.none(),
-        label='Еда',
-        empty_label='Выберите еду'
+        empty_label='Выбрать еду',
+        label='Еда'
     )
 
-    grams = forms.IntegerField(
-        min_value=0,
-        label='Граммов',
-        widget=forms.NumberInput(
-            attrs={
-                'placeholder': 'Кол-во граммов'
-            }
-        )
-    )
-
-    def __init__(self, *args, **kwargs):
-        # Установить поле request переданное из view.
-        self.request = kwargs.pop('request')
+    def __init__(self, request=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if request:
+            self.request = request
 
-        # Вывод данных поля в соответствии с аутентификацией пользователя
         if self.request.user.is_authenticated:
             self.fields['food'].queryset = Food.objects.filter(user=self.request.user)
         else:
@@ -58,6 +65,3 @@ class MealForm(forms.ModelForm):
                 bfield.field.widget.attrs['class'] = 'form-select'
             else:
                 bfield.field.widget.attrs['class'] = 'form-control'
-
-    # def save(self, commit=True):
-    #     return super().save(commit)
