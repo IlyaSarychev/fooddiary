@@ -22,7 +22,6 @@ class Meal(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, related_name='meals')
     time = models.TimeField('Время приема пищи', default=timezone.localtime)
     food = models.ManyToManyField('Food', verbose_name='Еда', through='MealFood')
-    calories = models.PositiveIntegerField('Калорий всего', default=0)
 
     class Meta:
         ordering = ('day', 'time')
