@@ -20,7 +20,7 @@
                 {% if day.meals.count < 1 %}
                     <p>В этом дне пока отсутствуют приемы пищи</p>
                 {% else %}
-                <ul class="list-group list-group-flush">
+                <ul class="list-group list-group-flush mb-3">
                     {% for meal in meals %}
                         <li 
                             class="list-group-item d-flex align-items-center"
@@ -28,7 +28,7 @@
                         >
                             <h6 class="mb-0">{{forloop.counter}}.</h6>
                             <p class="mb-0 ms-3">Время приема пищи: {{meal.time}}</p>
-                            <p class="mb-0 ms-3 text-muted"> ккал.</p>
+                            <p class="mb-0 ms-3 text-muted">{{meal.calories}} ккал.</p>
                             <a href="#" class="btn btn-warning ms-auto show-meal-info" data-target="#mealInfo">
                                 Посмотреть
                             </a>
@@ -39,6 +39,8 @@
                         </li>
                     {% endfor %}
                 </ul>
+
+                <p><b>Всего: <span class="ms-2">{{total_calories}} ккал</span></b></p>
                 {% endif %}
             </div>
         </div>

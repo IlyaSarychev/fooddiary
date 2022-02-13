@@ -49,6 +49,7 @@ class DayDetailView(DetailView):
         kwargs = super().get_context_data(**kwargs)
         kwargs['form'] = MealForm()
         kwargs['meals'] = kwargs['day'].meals.all()
+        kwargs['total_calories'] = kwargs['meals'].aggregate(Sum('calories')).get('calories__sum')
         return kwargs
 
 
@@ -139,6 +140,8 @@ def update_meal_view(request, meal_id):
         'food_form': MealFoodForm(request=request)
     }
     context['total_calories'] = context['food'].aggregate(Sum('calories'))['calories__sum']
+    meal.calories = context['total_calories']
+    meal.save()
 
     return render(request, 'diary/meal/update.html', context)
 
