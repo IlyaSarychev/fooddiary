@@ -65,6 +65,22 @@
         });
 
         document.getElementById('datePicker').value = new Date().toDateInputValue();
+
+
+        // закрытие рекоммендации войти
+        document.querySelector('.info-close').onclick = function() {
+
+            fetch('/profile/ajax-close-login-recommendation/', {
+                method: 'GET'
+            })
+                .then(resp => resp.json())
+                .then(data => {
+
+                    if (data.success) {
+                        document.querySelector('.info').style.display = 'none'
+                    }
+                })
+        }
     }
 </script>
 {% endblock %}

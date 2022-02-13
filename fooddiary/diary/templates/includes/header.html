@@ -42,10 +42,23 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li>
             </ul>
-            <form class="d-flex">
+            <!-- <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            </form> -->
+            {% if request.user.is_authenticated %}
+            {% else %}
+                <a href="" class="nav-link nav-item">Войти</a>
+            {% endif %}
         </div>
     </div>
 </nav>
+
+{% if not request.user.is_authenticated and not request.session.login_recommendation_closed %}
+<div class="w-100 py-2 bg-info info bg-gradient">
+    <div class="container d-flex align-items-center justify-content-between">
+        <p class="m-0 fs-6 text-white">Рекомендуем выполнить <a href="" class="text-decoration-none">вход</a>. Так вы сможете использовать весь функционал системы.</p>
+        <button class="info-close btn p-0"><i class="bi bi-x-circle text-white"></i></button>
+    </div>
+</div>
+{% endif %}

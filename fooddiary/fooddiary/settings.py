@@ -31,9 +31,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'debug_toolbar',
-    'django_select2',
 
     'diary.apps.DiaryConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
