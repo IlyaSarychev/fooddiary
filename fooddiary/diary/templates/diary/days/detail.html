@@ -92,12 +92,12 @@
 <script>
     window.onload = () => {
 
-        const showInfoBtn = document.querySelector('.show-meal-info')
+        const showInfoBtns = document.querySelectorAll('.show-meal-info')
         const infoModal = document.querySelector('#mealInfo')
         const infoModalBody = infoModal.querySelector('.modal-body')
         const bootstrapObjectModal = new bootstrap.Modal(infoModal)
-
-        showInfoBtn.onclick = function(e) {
+ 
+        function showInfoBtnHandler(e) {
             e.preventDefault()
             
             const mealId = this.closest('li').getAttribute('data-meal-id')
@@ -122,6 +122,8 @@
                     bootstrapObjectModal.show()
                 })
         }
+
+        showInfoBtns.forEach(btn => btn.addEventListener('click', showInfoBtnHandler))
     }
 </script>
 {% endblock %}
