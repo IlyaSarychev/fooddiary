@@ -54,8 +54,6 @@ def add_food_to_meal(request, meal_id):
     food = Food.objects.get(id=request.POST.get('food'))
     grams = request.POST.get('grams')
 
-    print(request.session.session_key)
-
     if request.user.is_authenticated:
         meal = Meal.objects.get(id=meal_id, user=request.user)
     else:
@@ -66,3 +64,9 @@ def add_food_to_meal(request, meal_id):
         meal=meal,
         grams=grams
     )
+
+
+def delete_food_from_meal(request, meal_food_id):
+    '''Удалить связь еды и приема пищи'''
+
+    return MealFood.objects.get(id=meal_food_id).delete()

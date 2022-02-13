@@ -17,6 +17,12 @@
                             <b>{{item.food}}</b>
                             <span class="text-muted ms-2">{{item.grams}}гр.</span>
                             <span class="ms-auto">{{item.calories}} ккал</span>
+                            <form action="{% url 'delete_food_from_meal' meal.id item.id %}" method="post" class="d-flex justify-content-end" style="width: 50px;">
+                                {% csrf_token %}
+                                <button class="ms-3 btn p-0" type="submit">
+                                    <i class="bi bi-x-circle-fill text-danger"></i>
+                                </button>
+                            </form>
                         </li>
                     {% empty %}
                         <li class="ps-0 list-group-item">Об этом приеме пищи пока нет информации</li>
@@ -25,6 +31,7 @@
                         <li class="list-group-item ps-0 d-flex align-items-center">
                             <b>Итого:</b>
                             <b class="ms-auto">{{total_calories}} ккал</b>
+                            <div style="width: 50px;"></div>
                         </li>
                     {% endif %}
                 </ul>

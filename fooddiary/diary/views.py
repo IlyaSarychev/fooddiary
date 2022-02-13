@@ -152,3 +152,11 @@ def add_food_to_meal_view(request, meal_id):
     meal_services.add_food_to_meal(request, meal_id)
 
     return HttpResponseRedirect(reverse('update_meal', args=[meal_id]))
+
+
+def delete_food_from_meal_view(request, meal_id, meal_food_id):
+    '''Обработка формы удаления связи еды и приема пищи'''
+
+    meal_services.delete_food_from_meal(request, meal_food_id)
+
+    return HttpResponseRedirect(reverse('update_meal', args=[meal_id]))

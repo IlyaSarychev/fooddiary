@@ -15,4 +15,5 @@ urlpatterns = [
     path('get-meal-info/<int:meal_id>/', views.get_meal_info_view, name='get_meal_info'),
     path('update-meal/<int:meal_id>/', views.update_meal_view, name='update_meal'),
     path('add-food-to-meal/<int:meal_id>/', views.add_food_to_meal_view, name='add_food_to_meal'),
+    path('delete-food-from-meal-view/<int:meal_id>/<int:meal_food_id>/', views.delete_food_from_meal_view, name='delete_food_from_meal'),
 ]
