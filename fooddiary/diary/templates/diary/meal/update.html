@@ -8,6 +8,12 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col-12">
+                <a href="{% url 'day_detail' meal.day.id %}" style="width: fit-content;" class="btn ps-0 mb-3 d-flex align-items-center">
+                    <i class="bi bi-arrow-left fs-5"></i>
+                    <span class="ms-3 fs-5">Назад</span>
+                </a>
+            </div>
+            <div class="col-12">
                 <h1 class="mb-4">Прием пищи {{meal.day.date|date:"j E"}} {{meal.time}}</h1>
             </div>
             <div class="col-sm-6 col-md-10">

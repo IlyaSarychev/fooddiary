@@ -140,7 +140,7 @@ def update_meal_view(request, meal_id):
         'food_form': MealFoodForm(request=request)
     }
     context['total_calories'] = context['food'].aggregate(Sum('calories'))['calories__sum']
-    meal.calories = context['total_calories']
+    meal.calories = context['total_calories'] or 0
     meal.save()
 
     return render(request, 'diary/meal/update.html', context)
