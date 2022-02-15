@@ -2,12 +2,11 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import login
-from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.views.generic import DetailView
 
 from .services import registration_services
-from .forms import ProfileLoginForm, NewUserForm
+from .forms import ProfileLoginForm, NewUserForm, ChangeProfileInfoForm
 from .models import Profile
 
 
@@ -50,3 +49,26 @@ class ProfileDetailView(DetailView):
     
     def get_object(self):
         return Profile.objects.get(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        '''Добавить дополнительный контекст динамически'''
+        kwargs = super().get_context_data(**kwargs)
+        # Форма изменения данных профиля
+        kwargs['profile_edit_form'] = ChangeProfileInfoForm(instance=self.get_object())
+        return kwargs
+
+
+def edit_profile_view(request):
+    '''Обработка формы изменения данных пользователя'''
+
+    profile = request.user.profile
+    form = ChangeProfileInfoForm(request.POST)
+
+    if form.is_valid():
+        profile.sex = request.POST.get('sex') if request.POST.get('sex') else None
+        profile.weight = request.POST.get('weight') if request.POST.get('weight') else None
+        profile.height = request.POST.get('height') if request.POST.get('height') else None
+        profile.age = request.POST.get('age') if request.POST.get('age') else None
+        profile.save()
+
+    return HttpResponseRedirect(reverse('profile'))

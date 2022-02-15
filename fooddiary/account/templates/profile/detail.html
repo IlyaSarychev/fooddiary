@@ -8,19 +8,100 @@
 
         <div class="row mt-5">
             <div class="col-12">
-                <div class="d-flex mb-4 align-items-baseline">
+                <div class="d-flex mb-5 align-items-baseline">
                     <h1 class="m-0">{{request.user.username}}</h1>
                     <p class="mb-0 ms-3 text-muted">Дата регистрации: {{profile.registered|date:"j E Y"}}г.</p>
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row position-relative mb-4">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#changeProfileInfo" class="position-absolute"
+                style="left: -30px; top: 0px; width: fit-content;">
+                <i class="bi bi-pencil-square text-primary"></i>
+            </a>
             <div class="col col-md-4 col-lg-3">
-
+                <p>
+                    <b>Пол:</b>
+                    <span>
+                        {% if profile.sex %}
+                            {% if profile.sex == 'male' %}
+                                Мужской
+                            {% else %}
+                                Женский
+                            {% endif %}
+                        {% else %}
+                            Не указано
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+            <div class="col col-md-4 col-lg-3">
+                <p>
+                    <b>Вес:</b>
+                    <span>{% if profile.weight %}{{ profile.weight }}кг{% else %}Не указано{% endif %}</span>
+                </p>
+            </div>
+            <div class="col col-md-4 col-lg-3">
+                <p>
+                    <b>Рост (в см.):</b>
+                    <span>{% if profile.height %}{{ profile.height }}см{% else %}Не указано{% endif %}</span>
+                </p>
+            </div>
+            <div class="col col-md-4 col-lg-3">
+                <p>
+                    <b>Возраст:</b>
+                    <span>
+                        {% if profile.age %}
+                            {{ profile.age }}
+                        {% else %}
+                            Не указано
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+            <div class="col col-md-4 col-lg-3">
+                <p>
+                    <b>Еды создано:</b>
+                    <span>{{request.user.food.count}}</span>
+                </p>
+            </div>
+            <div class="col col-md-4 col-lg-3">
+                <p>
+                    <b>Приемов пищи:</b>
+                    <span>{{request.user.meals.count}}</span>
+                </p>
             </div>
         </div>
 
     </div>
 </main>
+
+
+<div class="modal fade" id="changeProfileInfo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Изменить данные</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'edit_profile' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for field in profile_edit_form %}
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{field.auto_id}}" class="form-label">{{field.label}}</label>
+                                    {{field}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-success ms-auto d-block">Изменить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
