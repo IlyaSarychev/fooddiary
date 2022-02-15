@@ -5,7 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.views.generic import DetailView
 
-from .services import registration_services
+from .services import registration_services, profile_services
 from .forms import ProfileLoginForm, NewUserForm, ChangeProfileInfoForm
 from .models import Profile
 
@@ -59,16 +59,7 @@ class ProfileDetailView(DetailView):
 
 
 def edit_profile_view(request):
-    '''Обработка формы изменения данных пользователя'''
+    '''Обработка формы изменения данных профиля пользователя'''
 
-    profile = request.user.profile
-    form = ChangeProfileInfoForm(request.POST)
-
-    if form.is_valid():
-        profile.sex = request.POST.get('sex') if request.POST.get('sex') else None
-        profile.weight = request.POST.get('weight') if request.POST.get('weight') else None
-        profile.height = request.POST.get('height') if request.POST.get('height') else None
-        profile.age = request.POST.get('age') if request.POST.get('age') else None
-        profile.save()
-
+    profile_services.change_profile_info(request)
     return HttpResponseRedirect(reverse('profile'))
