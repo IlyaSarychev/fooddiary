@@ -36,6 +36,7 @@ def user_registration_view(request):
             new_user = form.save(commit=False)
             new_user.save()
             registration_services.set_current_models_user_fields(request, new_user)
+            Profile.objects.create(user=new_user)
             login(request, new_user)
             return HttpResponseRedirect(reverse('days_list'))
         else:
@@ -44,6 +45,8 @@ def user_registration_view(request):
 
 class ProfileDetailView(DetailView):
     '''Профиль пользователя'''
+
+    template_name = 'profile/detail.html'
     
     def get_object(self):
         return Profile.objects.get(user=self.request.user)

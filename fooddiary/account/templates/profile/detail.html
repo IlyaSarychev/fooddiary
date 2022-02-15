@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Мой профиль{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex mb-4 align-items-baseline">
+                    <h1 class="m-0">{{request.user.username}}</h1>
+                    <p class="mb-0 ms-3 text-muted">Дата регистрации: {{profile.registered|date:"j E Y"}}г.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4 col-lg-3">
+
+            </div>
+        </div>
+
+    </div>
+</main>
+{% endblock %}
