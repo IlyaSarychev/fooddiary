@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="offset-md-3 col-md-6">
+                <h1 class="mb-3">Вход</h1>
+                <p class="mb-4">Нет аккаунта? Вы можете <a href="{% url 'user_registration' %}">зарегистрироваться.</a></p>
+            </div>
+            <div class="offset-md-3 col-md-6">
+
+                {% if form.errors %}
+                    {% for error, message in form.errors.items %}
+                        <div class="alert alert-danger">
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form action="." method="post" class="pb-5">
+                    {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                        <div class="mb-3">
+                            <label for="{{field.auto_id}}" class="form-label">{{field.label}}</label>
+                            {{field}}
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-success" type="submit">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

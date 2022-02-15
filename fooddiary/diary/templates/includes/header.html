@@ -38,17 +38,30 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                </li>
             </ul>
             <!-- <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form> -->
             {% if request.user.is_authenticated %}
+
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{request.user.username}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Еда</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+
             {% else %}
-                <a href="" class="nav-link nav-item">Войти</a>
+                <a href="{% url 'login' %}" class="nav-link nav-item">Войти</a>
             {% endif %}
         </div>
     </div>
@@ -57,7 +70,7 @@
 {% if not request.user.is_authenticated and not request.session.login_recommendation_closed %}
 <div class="w-100 py-2 bg-info info bg-gradient">
     <div class="container d-flex align-items-center justify-content-between">
-        <p class="m-0 fs-6 text-white">Рекомендуем выполнить <a href="" class="text-decoration-none">вход</a>. Так вы сможете использовать весь функционал системы.</p>
+        <p class="m-0 fs-6 text-white">Рекомендуем выполнить <a href="{% url 'login' %}" class="text-decoration-none">вход</a>. Так вы сможете использовать весь функционал системы.</p>
         <button class="info-close btn p-0"><i class="bi bi-x-circle text-white"></i></button>
     </div>
 </div>
