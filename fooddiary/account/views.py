@@ -2,10 +2,13 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.views.generic import DetailView
 
 from .services import registration_services
 from .forms import ProfileLoginForm, NewUserForm
+from .models import Profile
 
 
 def ajax_close_login_recommendation_view(request):
@@ -37,3 +40,10 @@ def user_registration_view(request):
             return HttpResponseRedirect(reverse('days_list'))
         else:
             return render(request, 'registration/sign_up.html', {'form': form})
+
+
+class ProfileDetailView(DetailView):
+    '''Профиль пользователя'''
+    
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
