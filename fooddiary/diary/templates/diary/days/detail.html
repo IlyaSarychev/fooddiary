@@ -119,6 +119,8 @@
                     data = data.data
                     if (data.length) {
                         infoModalBody.innerHTML = ''
+                    } else {
+                        infoModalBody.innerHTML = '<p>Об этом приеме пищи пока нет информации</p>'
                     }
 
                     data.forEach(item => {
