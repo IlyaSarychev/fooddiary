@@ -10,3 +10,4 @@ class Profile(models.Model):
     weight = models.PositiveSmallIntegerField('Вес', null=True, blank=True)
     height = models.PositiveSmallIntegerField('Рост (в см.)', null=True, blank=True)
     age = models.PositiveSmallIntegerField('Возраст', null=True, blank=True)
+    calorie_consumption = models.PositiveIntegerField('Расход калорий (в день)', null=True, blank=True)
