@@ -11,4 +11,5 @@ urlpatterns = [
     path('sign-up/', views.user_registration_view, name='user_registration'),
     path('', views.ProfileDetailView.as_view(), name='profile'),
     path('edit/', views.edit_profile_view, name='edit_profile'),
+    path('calorie-consumption-calculator/', views.calorie_consumption_calculator_view , name='calorie_consumption_calculator'),
 ]

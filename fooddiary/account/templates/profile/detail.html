@@ -76,7 +76,13 @@
             <div class="col col-md-4 col-lg-3">
                 <p>
                     <b>Расход калорий:</b>
-                    <span></span>
+                    <span>
+                        {% if profile.calorie_consumption %}
+                            {{profile.calorie_consumption}}
+                        {% else %}
+                            <a href="{% url 'calorie_consumption_calculator' %}" title="Рассчитать расход калорий">Неизвестно</a>
+                        {% endif %}
+                    </span>
                 </p>
             </div>
         </div>

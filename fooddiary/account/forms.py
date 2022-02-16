@@ -86,11 +86,29 @@ class ChangeProfileInfoForm(forms.ModelForm):
 
             field = bfield.field
 
-            if field.label == 'Пол':
+            if field.widget.__class__.__name__ in ('Select'):
                 field.widget.attrs['class'] = 'form-select'
             else:
                 field.widget.attrs['class'] = 'form-control'
 
-            # # добавить bs классы валидации
-            # if len(bfield.errors):
-            #     field.widget.attrs['class'] = field.widget.attrs['class'] + ' is-invalid'
+
+class ProfileCalorieConsumptionForm(ChangeProfileInfoForm, forms.ModelForm):
+    '''Форма модели Profile для рассчета суточного расхода калорий'''
+
+    ACTIVITY_CHOICES = [
+        (None, 'Ваш уровень активности'),
+        (1.2, 'Практически отсутствует'),
+        (1.375, 'До 3-х раз в неделю'),
+        (1.55, '3-5 раз в неделю'),
+        (1.725, '6-7 раз в неделю'),
+        (1.9, 'hard mode'),
+    ]
+
+    activity = forms.ChoiceField(
+        choices=ACTIVITY_CHOICES,
+        label='Уровень активности'
+    )
+
+    def save(self, commit=True):
+        # не нужно сохранять все данные о профиле из этой формы
+        profile = super().save(commit=False)
