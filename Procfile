@@ -1,0 +1,1 @@
+web: gunicorn fooddiary.wsgi --log-file -
