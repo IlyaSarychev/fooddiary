@@ -75,10 +75,10 @@ def calorie_consumption_calculator_view(request):
         if form.is_valid():
             calorie_consumption = calculator_services.calculate_calorie_consumption(
                 sex=request.POST.get('sex'),
-                weight=request.POST.get('weight'),
-                height=request.POST.get('height'),
-                age=request.POST.get('age'),
-                activity=request.POST.get('activity')
+                weight=int(request.POST.get('weight')),
+                height=int(request.POST.get('height')),
+                age=int(request.POST.get('age')),
+                activity=float(request.POST.get('activity'))
             )
             profile.calorie_consumption = calorie_consumption
             profile.save()

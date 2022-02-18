@@ -108,7 +108,3 @@ class ProfileCalorieConsumptionForm(ChangeProfileInfoForm, forms.ModelForm):
         choices=ACTIVITY_CHOICES,
         label='Уровень активности'
     )
-
-    def save(self, commit=True):
-        # не нужно сохранять все данные о профиле из этой формы
-        profile = super().save(commit=False)
