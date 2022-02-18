@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="row position-relative mb-4">
+        <div class="row position-relative">
             <a href="#" data-bs-toggle="modal" data-bs-target="#changeProfileInfo" class="position-absolute"
                 style="left: -30px; top: 0px; width: fit-content;">
                 <i class="bi bi-pencil-square text-primary"></i>
@@ -25,13 +25,13 @@
                     <b>Пол:</b>
                     <span>
                         {% if profile.sex %}
-                            {% if profile.sex == 'male' %}
-                                Мужской
-                            {% else %}
-                                Женский
-                            {% endif %}
+                        {% if profile.sex == 'male' %}
+                        Мужской
                         {% else %}
-                            Не указано
+                        Женский
+                        {% endif %}
+                        {% else %}
+                        Не указано
                         {% endif %}
                     </span>
                 </p>
@@ -53,9 +53,9 @@
                     <b>Возраст:</b>
                     <span>
                         {% if profile.age %}
-                            {{ profile.age }}
+                        {{ profile.age }}
                         {% else %}
-                            Не указано
+                        Не указано
                         {% endif %}
                     </span>
                 </p>
@@ -72,15 +72,22 @@
                     <span>{{request.user.meals.count}}</span>
                 </p>
             </div>
-            <div class="w-100"></div>
+        </div>
+
+        <div class="row position-relative">
+            <a href="{% url 'calorie_consumption_calculator' %}" class="position-absolute"
+                style="left: -30px; top: 0px; width: fit-content;">
+                <i class="bi bi-pencil-square text-primary"></i>
+            </a>
             <div class="col col-md-4 col-lg-3">
                 <p>
                     <b>Расход калорий:</b>
                     <span>
                         {% if profile.calorie_consumption %}
-                            {{profile.calorie_consumption}}
+                        {{profile.calorie_consumption}}
                         {% else %}
-                            <a href="{% url 'calorie_consumption_calculator' %}" title="Рассчитать расход калорий">Неизвестно</a>
+                        <a href="{% url 'calorie_consumption_calculator' %}"
+                            title="Рассчитать расход калорий">Неизвестно</a>
                         {% endif %}
                     </span>
                 </p>
@@ -103,12 +110,12 @@
                     {% csrf_token %}
                     <div class="row">
                         {% for field in profile_edit_form %}
-                            <div class="col-12 col-md-6">
-                                <div class="mb-3">
-                                    <label for="{{field.auto_id}}" class="form-label">{{field.label}}</label>
-                                    {{field}}
-                                </div>
+                        <div class="col-12 col-md-6">
+                            <div class="mb-3">
+                                <label for="{{field.auto_id}}" class="form-label">{{field.label}}</label>
+                                {{field}}
                             </div>
+                        </div>
                         {% endfor %}
                     </div>
                     <button type="submit" class="btn btn-success ms-auto d-block">Изменить</button>
