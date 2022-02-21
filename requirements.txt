@@ -14,6 +14,7 @@ lazy-object-proxy==1.7.1
 mccabe==0.6.1
 packaging==21.3
 platformdirs==2.4.1
+psycopg2==2.9.3
 pylint==2.12.2
 pylint-plugin-utils==0.7
 pyparsing==3.0.7
@@ -22,5 +23,6 @@ sqlparse==0.4.2
 toml==0.10.2
 typing_extensions==4.0.1
 tzdata==2021.5
+waitress==2.0.0
 whitenoise==6.0.0
 wrapt==1.13.3
