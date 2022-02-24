@@ -16,6 +16,7 @@ class DaysListView(ListView):
     context_object_name = 'days_list'
 
     def get_queryset(self):
+        print(self.request.session.session_key)
         if self.request.user.is_authenticated:
             return Day.objects.filter(user=self.request.user)
         else:
