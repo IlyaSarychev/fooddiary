@@ -4,9 +4,45 @@
 {% block title %}Изменить прием пищи {{meal.day.date|date:"j E"}} {{meal.time}}{% endblock %}
 
 {% block content %}
+<style>
+    @media (max-width: 575px) {
+        .list-group-item {
+            position: relative;
+        }
+
+        .list-group-item b {
+            max-width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .list-group-item form {
+            position: absolute;
+            top: 5px;
+            right: 0;
+        }
+
+        .list-group-item .calories {
+            width: 100%;
+            text-align: right;
+            padding-right: 50px;
+            padding-top: 5px;
+        }
+
+        .list-group-item .grams {
+            margin-left: auto;
+            margin-right: 50px;
+        }
+
+        .date {
+            white-space: nowrap;
+        }
+    }
+</style>
 <main>
     <div class="container">
-        <div class="row mt-5">
+        <div class="row mt-4 mt-sm-5">
             <div class="col-12">
                 <a href="{% url 'day_detail' meal.day.id %}" style="width: fit-content;" class="btn ps-0 mb-3 d-flex align-items-center">
                     <i class="bi bi-arrow-left fs-5"></i>
@@ -14,15 +50,15 @@
                 </a>
             </div>
             <div class="col-12">
-                <h1 class="mb-4">Прием пищи {{meal.day.date|date:"j E"}} {{meal.time}}</h1>
+                <h1 class="mb-4">Прием пищи <span class="date">{{meal.day.date|date:"j E"}} {{meal.time}}</span></h1>
             </div>
-            <div class="col-sm-6 col-md-10">
-                <ul class="list-group list-group-flush mb-3 w-75">
+            <div class="col-lg-9">
+                <ul class="list-group list-group-flush mb-3 w-100">
                     {% for item in food %}
-                        <li class="list-group-item ps-0 d-flex align-items-center">
+                        <li class="list-group-item ps-0 d-flex flex-wrap align-items-center">
                             <b>{{item.food}}</b>
-                            <span class="text-muted ms-2">{{item.grams}}гр.</span>
-                            <span class="ms-auto">{{item.calories}} ккал</span>
+                            <span class="text-muted ms-sm-2 grams">{{item.grams}}гр.</span>
+                            <span class="ms-auto calories">{{item.calories}} ккал</span>
                             <form action="{% url 'delete_food_from_meal' meal.id item.id %}" method="post" class="d-flex justify-content-end" style="width: 50px;">
                                 {% csrf_token %}
                                 <button class="ms-3 btn p-0" type="submit">
@@ -51,16 +87,15 @@
                     <span>Добавить еду</span>
                 </button>
             </div>
-            <div class="col-sm-6 col-md-2">
-                <form action="#" method="post">
+            <div class="w-100"></div>
+            <div class="col-7 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                <form action="#" method="post" class="mt-4">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="{{form.time.auto_id}}" class="form-label">{{form.time.label}}</label>
                         {{form.time}}
                     </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success ms-auto d-block">Сохранить</button>
-                    </div>
+                    <button type="submit" class="btn btn-success">Сохранить</button>
                 </form>
             </div>
         </div>
