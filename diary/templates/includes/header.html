@@ -1,3 +1,10 @@
+<style>
+    @media (max-width: 991px) {
+        .profile-dropdown-menu {
+            position: static;
+        }
+    }
+</style>
 <nav class="navbar navbar-light bg-warning navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'days_list' %}">Food Diary</a>
@@ -19,7 +26,7 @@
                         <li><a class="dropdown-item" href="{% url 'my_food_list' %}">Еда</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle disabled" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         База данных
@@ -27,16 +34,16 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Еда</a></li>
                     </ul>
-                </li>
+                </li> -->
             </ul>
             {% if request.user.is_authenticated %}
 
                 <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
+                    <a class="p-0 py-1 nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         {{request.user.username}}
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end profile-dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
                         <li>
                             <hr class="dropdown-divider">

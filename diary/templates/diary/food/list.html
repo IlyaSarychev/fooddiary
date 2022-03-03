@@ -3,14 +3,29 @@
 {% block title %}База данных о еде{% endblock %}
 
 {% block content %}
+<style>
+    @media (max-width: 575px) {
+        .list-group-item {
+            padding: 0.5rem 0;
+        }
+
+        .list-group-item h6 {
+            max-width: 50%;
+        }
+
+        .list-group-item .buttons {
+            width: 100%;
+        }
+    }
+</style>
 <main>
     <div class="container">
-        <div class="row mt-5">
+        <div class="row mt-4 mt-sm-5">
             <div class="col-12">
                 <div class="d-flex align-items-center mb-4">
-                    <h1>Моя база данных о еде</h1>
+                    <h1>Моя база данных о&nbsp;еде</h1>
                     <a href="{% url 'my_food_create' %}" class="btn btn-success ms-3 p-1 rounded-circle"
-                        style="width: 35px; height: 35px;">
+                        style="min-width: 35px; min-height: 35px;">
                         <i class="bi bi-plus"></i>
                     </a>
                 </div>
@@ -20,12 +35,12 @@
                 {% if food.count > 0 %}
                 <ul class="list-group list-group-flush">
                     {% for item in food %}
-                        <li class="list-group-item d-flex jistify-content-between align-items-center">
+                        <li class="list-group-item d-flex flex-wrap flex-sm-nowrap jistify-content-between align-items-center">
                             <h6 class="m-0">{{item.title}}</h6>
-                            <span class="ms-2 fs-6 text-muted">{{ item.calories }}ккал/100гр</span>
-                            <div class="d-flex ms-auto">
-                                <a href="{% url 'my_food_update' item.id %}" class="btn btn-primary">Изменить</a>
-                                <a href="{% url 'my_food_delete' item.id %}" class="btn btn-danger ms-1">Удалить</a>
+                            <span class="ms-auto ms-sm-2 fs-6 text-muted">{{ item.calories }}ккал/100гр</span>
+                            <div class="d-flex buttons ms-auto mt-3 mt-sm-0">
+                                <a href="{% url 'my_food_update' item.id %}" class="flex-grow-1 flex-sm-grow-0 btn btn-primary">Изменить</a>
+                                <a href="{% url 'my_food_delete' item.id %}" class="flex-grow-1 flex-sm-grow-0 btn btn-danger ms-1">Удалить</a>
                             </div>
                         </li>
                     {% endfor %}

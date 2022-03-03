@@ -6,11 +6,11 @@
 <main>
     <div class="container">
 
-        <div class="row mt-5">
+        <div class="row mt-4 mt-sm-5">
             <div class="col-12">
-                <div class="d-flex mb-5 align-items-baseline">
+                <div class="d-sm-flex mb-3 mb-md-5 align-items-baseline">
                     <h1 class="m-0">{{request.user.username}}</h1>
-                    <p class="mb-0 ms-3 text-muted">Дата регистрации: {{profile.registered|date:"j E Y"}}г.</p>
+                    <p class="mb-0 ms-sm-3 text-muted">Дата регистрации: {{profile.registered|date:"j E Y"}}г.</p>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 style="left: -30px; top: 0px; width: fit-content;">
                 <i class="bi bi-pencil-square text-primary"></i>
             </a>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Пол:</b>
                     <span>
@@ -36,19 +36,19 @@
                     </span>
                 </p>
             </div>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Вес:</b>
                     <span>{% if profile.weight %}{{ profile.weight }}кг{% else %}Не указано{% endif %}</span>
                 </p>
             </div>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Рост (в см.):</b>
                     <span>{% if profile.height %}{{ profile.height }}см{% else %}Не указано{% endif %}</span>
                 </p>
             </div>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Возраст:</b>
                     <span>
@@ -60,13 +60,13 @@
                     </span>
                 </p>
             </div>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Еды создано:</b>
                     <span>{{request.user.food.count}}</span>
                 </p>
             </div>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Приемов пищи:</b>
                     <span>{{request.user.meals.count}}</span>
@@ -79,7 +79,7 @@
                 style="left: -30px; top: 0px; width: fit-content;">
                 <i class="bi bi-pencil-square text-primary"></i>
             </a>
-            <div class="col col-md-4 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <p>
                     <b>Расход калорий:</b>
                     <span>
